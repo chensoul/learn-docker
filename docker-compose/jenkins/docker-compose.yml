@@ -1,0 +1,21 @@
+# https://hub.docker.com/r/jenkins/jenkins
+version: '3'
+services:
+  jenkins:
+    image: jenkins/jenkins:2.346.1
+    container_name: jenkins
+    restart: unless-stopped
+    volumes:
+      - "/usr/bin/docker:/usr/bin/docker"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/usr/lib64/libltdl.so.7:/usr/lib/x86_64-linux-gnu/libltdl.so.7"
+      #      - "/usr/local/bin/docker-compose:/usr/local/bin/docker-compose"  # 无效
+      - "./jenkins/jenkins_home:/var/jenkins_home"
+      - "./jenkins/jenkins_config:/var/jenkins_config"
+    environment:
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+      JAVA_OPTS: '-Xmx2048M -Xms2048M -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:MaxNewSize=128m -Djava.util.logging.config.file=/var/jenkins_home/log.properties -Duser.timezone=Asia/Shanghai'
+    user: root
+    ports:
+      - "10000:8080"

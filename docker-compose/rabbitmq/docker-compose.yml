@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    hostname: rabbit
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - "./conf/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf"
+      - "./conf/10-default-guest-user.conf:/etc/rabbitmq/conf.d/10-default-guest-user.conf"
+      - "./data:/var/lib/rabbitmq"
+      - "./plugins/rabbitmq_delayed_message_exchange-3.9.0.ez:/opt/rabbitmq/plugins/rabbitmq_delayed_message_exchange-3.9.0.ez"
+

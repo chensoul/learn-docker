@@ -1,0 +1,28 @@
+version: "3"
+services:
+  seata:
+    image: seataio/seata-server:1.5.2
+    container_name: seata
+    hostname: seata
+    restart: always
+    networks:
+      - seata
+    ports:
+      - "7091:7091"
+      - "8091:8091"
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+      # https://seata.io/zh-cn/docs/ops/deploy-by-docker.html
+      # 注册到nacos上的ip。客户端将通过该ip访问seata服务。
+      # 注意公网ip和内网ip的差异。
+      - SEATA_IP=xxx.xxx.xxx.xxx
+      - SEATA_PORT=8091
+      - STORE_MODE=db
+    volumes:
+      - /usr/software/dockerDatabase/seata/config/registry.conf:/seata-server/resources/registry.conf
+      - /usr/software/dockerDatabase/seata/logs:/root/logs/seata
+
+networks:
+  seata:
+    driver: bridge

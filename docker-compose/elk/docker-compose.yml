@@ -1,0 +1,71 @@
+version: '3'
+services:
+  elasticsearch:
+    image: elasticsearch:7.14.1
+    container_name: elasticsearch
+    restart: unless-stopped
+    volumes:
+      - "./elasticsearch/data:/usr/share/elasticsearch/data"
+      - "./elasticsearch/logs:/usr/share/elasticsearch/logs"
+      - "./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml"
+      - "./config/jvm.options:/usr/share/elasticsearch/config/jvm.options"
+      - "./plugins/ik:/usr/share/elasticsearch/plugins/ik" # IK中文分词插件
+    environment:
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+      TAKE_FILE_OWNERSHIP: "true"  # 权限
+      discovery.type: single-node
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+      ELASTIC_PASSWORD: "123456" # elastic账号密码
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+
+  kibana:
+    image: kibana:7.14.1       # 原镜像`kibana:7.14.1`
+    container_name: kibana
+    restart: unless-stopped
+    volumes:
+      - ./config/kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    links:
+      - elasticsearch
+
+  logstash:
+    image: logstash:7.14.1
+    container_name: logstash
+    restart: unless-stopped
+    environment:
+      LS_JAVA_OPTS: "-Xmx512m -Xms512m"
+    volumes:
+      - "./logstash/data:/usr/share/logstash/data"
+      - "./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml"
+      #      - "./elk/logstash/config/logstash.conf:/usr/share/logstash/config/logstash.conf"
+      - "./logstash/config/small-tools:/usr/share/logstash/config/small-tools"
+    #    command: logstash -f /usr/share/logstash/config/logstash.conf    # 指定logstash启动时使用的配置文件 - 指定单个文件
+    command: logstash -f /usr/share/logstash/config/small-tools       # 指定logstash启动时使用的配置文件 - 指定目录夹（系统会自动读取文件夹下所有配置文件，并在内存中整合）
+    ports:
+      - "9600:9600"
+      #      - "10001-10010:10001-10010"
+      - "1218:1218"
+      - "20010:20010"
+      - "20030:20030"
+      - "20040:20040"
+    depends_on:
+      - elasticsearch
+
+  filebeat:
+    image: filebeat:7.14.1
+    container_name: filebeat
+    restart: unless-stopped
+    volumes:
+      - "./config/filebeat.yml:/usr/share/filebeat/filebeat.yml"
+    environment:
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+    depends_on:
+      - elasticsearch
+      - logstash

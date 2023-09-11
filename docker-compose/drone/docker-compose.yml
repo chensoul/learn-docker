@@ -1,0 +1,33 @@
+version: "3.7"
+
+services:
+  drone:
+    image: drone/drone
+    container_name: drone
+    ports:
+      -  "3010:80"
+    volumes:
+      - ./data:/data
+    environment:
+      - DRONE_SERVER_HOST=drone
+      - DRONE_SERVER_PROTO=http
+      - DRONE_RPC_SECRET=secret
+      - DRONE_DATABASE_DRIVER=mysql
+      - DRONE_DATABASE_DATASOURCE=mysql://drone:drone@192.168.56.141:3306/drone?sslmode=disable
+      - DRONE_GITEA_SERVER=http://192.168.56.141:3000
+      - DRONE_AGENTS_ENABLED=true
+    restart: always
+
+  agent:
+    image: drone/agent
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DRONE_RPC_PROTO=http
+      - DRONE_RPC_HOST=drone
+      - DRONE_RPC_SECRET=secret
+      - DRONE_RUNNER_NAME=agent
+      - DRONE_RUNNER_CAPACITY=2
+    depends_on:
+      - drone
+    restart: always

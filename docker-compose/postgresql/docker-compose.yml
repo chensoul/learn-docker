@@ -1,0 +1,15 @@
+version: '3'
+services:
+  postgresql:
+    image: postgres/postgres:14.5
+    container_name: postgresql
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      ALLOW_IP_RANGE: 0.0.0.0/0
+    ports:
+      - "5432:5432"

@@ -1,0 +1,21 @@
+# https://hub.docker.com/_/sonarqube
+version: '3'
+services:
+  sonarqube:
+    image: sonarqube/sonarqube:9.2.1-community
+    container_name: sonarqube
+    restart: unless-stopped
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+    command:
+      - -Dsonar.ce.javaOpts=-Xmx2048m
+      - -Dsonar.web.javaOpts=-Xmx2048m
+      - -Dsonar.web.context=/
+      - -Dsonar.core.serverBaseURL=https://sonarqube.example.com
+    environment:
+      TZ: Asia/Shanghai
+      SONARQUBE_JDBC_USERNAME: sonar
+      SONARQUBE_JDBC_PASSWORD: sonar
+      SONARQUBE_JDBC_URL: jdbc:postgresql://postgres:5432/sonar
+    ports:
+      - "9005:9000"

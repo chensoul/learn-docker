@@ -1,0 +1,19 @@
+version: '3'
+services:
+  sentinel:
+    image: sentinel-dashboard:1.8.4-nacos
+    container_name: sentinel
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+      SENTINEL_AUTH_USERNAME: sentinel
+      SENTINEL_AUTH_PASSWORD: sentinel
+      # TODO nacos配置信息
+      NACOS_SERVER_ADDR: www.zhengqingya.com:8848
+      NACOS_NAMESPACE: prod
+      NACOS_GROUP: sentinel-group
+      NACOS_USERNAME: nacos
+      NACOS_PASSWORD: nacos
+    ports: # 映射端口
+      - "8858:8858"
