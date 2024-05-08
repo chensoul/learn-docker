@@ -5,12 +5,11 @@
 eg: 
 
 ```yml
-version: '3'
+version: '3.0'
 
 services:
   kafka:
     image: registry.cn-hangzhou.aliyuncs.com/zhengqing/kafka:3.4.1
-    container_name: kafka
     environment:
       ALLOW_PLAINTEXT_LISTENER: yes
       KAFKA_CFG_ZOOKEEPER_CONNECT: zookepper:2181                        

@@ -3,7 +3,7 @@
 # 提取UID为1000-9999的本地用户和组
 # 这里是一个示例，将“SUFFIX=***”替换为自己的域名
 
-SUFFIX='dc=javachen,dc=xyz'
+SUFFIX='dc=chensoul,dc=xyz'
 LDIF='ldapusers.ldif'
 
 echo -n > $LDIF

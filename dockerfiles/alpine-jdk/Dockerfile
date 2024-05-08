@@ -1,8 +1,8 @@
-# JVM 在 Docker 等容器环境下的资源限制问题 
+# JVM 在 Docker 等容器环境下的资源限制问题
 # https://blog.yuanbin.me/posts/2019-03/2019-03-18_23-30-06/
 # https://segmentfault.com/a/1190000021392583?utm_medium=referral
 
-FROM javachen/alpine:3.12
+FROM chensoul/alpine:3.12
 
 ENV LANG en_US.UTF-8
 ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk

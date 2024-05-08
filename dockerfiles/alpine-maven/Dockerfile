@@ -1,4 +1,4 @@
-FROM javachen/alpine-jdk:8
+FROM chensoul/alpine-jdk:8
 
 USER root
 
@@ -12,7 +12,7 @@ RUN apk add wget \
 
 ENV MAVEN_HOME=/opt/maven M2_HOME=/opt/maven
 
-USER java 
+USER java
 
 # Dump to bash
 CMD ["bash"]

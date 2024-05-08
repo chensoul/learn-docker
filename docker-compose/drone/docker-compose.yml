@@ -3,7 +3,6 @@ version: "3.7"
 services:
   drone:
     image: drone/drone
-    container_name: drone
     ports:
       -  "3010:80"
     volumes:

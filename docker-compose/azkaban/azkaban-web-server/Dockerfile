@@ -1,7 +1,7 @@
-FROM javachen/alpine-jdk:8
+FROM chensoul/alpine-jdk:8
 
 # Azkaban web server port
-EXPOSE 8443    
+EXPOSE 8443
 
 COPY azkaban-web-server-0.1.0-SNAPSHOT.tar.gz .
 

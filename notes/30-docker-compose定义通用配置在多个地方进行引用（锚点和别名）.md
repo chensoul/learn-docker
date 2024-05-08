@@ -7,7 +7,7 @@
 eg：
 
 ```yml
-version: '3'
+version: '3.0'
 
 # 定义通用配置
 x-common-config: &common-config
@@ -24,14 +24,12 @@ x-common-config: &common-config
 services:
   nginx-1:
     image: registry.cn-hangzhou.aliyuncs.com/zhengqing/nginx:1.21.1
-    container_name: nginx-1
     <<: *common-config
     ports:
       - "81:80"
 
   nginx-2:
     image: registry.cn-hangzhou.aliyuncs.com/zhengqing/nginx:1.21.1
-    container_name: nginx-2
     <<: *common-config
     ports:
       - "82:80"

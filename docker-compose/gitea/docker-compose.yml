@@ -1,20 +1,15 @@
-# 更多信息请参考官网:https://docs.gitea.io/en-us/install-with-docker/
+# https://docs.gitea.io/en-us/install-with-docker/
 version: "3"
 services:
   gitea:
     image: gitea/gitea
-    container_name: gitea
     environment:
       - GITEA__database__DB_TYPE=mysql
       - GITEA__database__HOST= xxx.xxx.xxx.xxx:8065
       - GITEA__database__NAME=gitea
       - GITEA__database__USER=root
       - GITEA__database__PASSWD= ******
-    hostname: gitea
     restart: always
-    volumes:
-      - /usr/software/dockerDatabase/gitea/timezone:/etc/timezone:ro
-      - /usr/software/dockerDatabase/gitea/localtime:/etc/localtime:ro
     ports:
       - "8066:3000"
       - "8065:22"

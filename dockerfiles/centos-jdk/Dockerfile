@@ -1,4 +1,4 @@
-FROM javachen/centos:7
+FROM chensoul/centos:7
 
 # Create a user and group used to launch processes
 # The user ID 1000 is the default for the first "regular" user on Fedora/RHEL,

@@ -1,9 +1,8 @@
-version: "3.7"
+version: "3"
 
 services:
   openldap:
     image: osixia/openldap
-    container_name: openldap
     command: "--loglevel debug"
     ports:
       - "389:389"
@@ -14,8 +13,8 @@ services:
       - ./data/var:/var/lib/ldap
       - ./data/run:/container/run
     environment:
-      - LDAP_ORGANISATION=JavaChen
-      - LDAP_DOMAIN=javachen.com
+      - LDAP_ORGANISATION=chensoul
+      - LDAP_DOMAIN=chensoul.com
       - LDAP_ADMIN_PASSWORD=admin
       - LDAP_CONFIG_PASSWORD=config
       - LDAP_BACKEND=hdb
@@ -23,35 +22,28 @@ services:
       - LDAP_TLS_CA_CRT_FILENAME=ca.crt
       - LDAP_TLS_CRT_FILENAME=ldap.crt
       - LDAP_TLS_KEY_FILENAME=ldap.key
-    restart: always
 
   phpldapadmin:
     image: osixia/phpldapadmin
-    container_name: phpldapadmin
     command: "--loglevel debug"
     ports:
       - "8080:80"
     environment:
-      - PHPLDAPADMIN_LDAP_HOSTS="#PYTHON2BASH:[{'openldap': [{'server': [{'tls': False,'port':30389}] }] }]"
-      - PHPLDAPADMIN_HTTPS=false
+      PHPLDAPADMIN_LDAP_HOSTS: "#PYTHON2BASH:[{'openldap': [{'server': [{'tls': False,'port':30389}] }] }]"
+      PHPLDAPADMIN_HTTPS: false
     depends_on:
       - openldap
-    restart: always
 
   ldap-ssp:
     image: tiredofit/self-service-password:latest
-    container_name: ldap-ssp
     ports:
       - "8081:80"
-    volumes:
-      - ./data/:/www/ssp
-      - ./logs/:/www/logs
     environment:
       - LDAP_SERVER=ldap://openldap
       - LDAP_STARTTLS=false
-      - LDAP_BINDDN=cn=admin,dc=javachen,dc=com
+      - LDAP_BINDDN=cn=admin,dc=chensoul,dc=com
       - LDAP_BINDPASS=admin
-      - LDAP_BASE_SEARCH=ou=People,dc=javachen,dc=com
+      - LDAP_BASE_SEARCH=ou=People,dc=chensoul,dc=com
       - LDAP_LOGIN_ATTRIBUTE=cn
       - LDAP_FULLNAME_ATTRIBUTE=cn
       - PASSWORD_HASH=SSHA

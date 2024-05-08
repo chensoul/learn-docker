@@ -1,4 +1,4 @@
-FROM javachen/centos-jdk:8
+FROM chensoul/centos-jdk:8
 
 USER root
 
@@ -13,7 +13,7 @@ RUN yum install -y wget && \
 
 ENV MAVEN_HOME=/opt/maven M2_HOME=/opt/maven
 
-USER java 
+USER java
 
 # Dump to bash
 CMD ["bash"]

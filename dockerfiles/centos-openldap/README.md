@@ -17,7 +17,7 @@ docker run -d -p 389:389 -p 639:639 \
 -e LDAP_ADMIN_PASSWORD=shileizcc \
 -v /data/openldap/ldap:/var/lib/ldap \
 -v /data/openldap/slapd.d:/etc/openldap/slapd.d \
-javachen/centos-openldap:2.4.44
+chensoul/centos-openldap:2.4.44
 ```
 
 测试 Web UI：

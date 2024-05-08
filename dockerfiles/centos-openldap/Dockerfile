@@ -1,4 +1,4 @@
-FROM javachen/centos:7
+FROM chensoul/centos:7
 
 RUN yum install -y epel-release \
 	&& yum install -y supervisor openldap openldap-servers openldap-clients openldap-devel compat-openldap migrationtools \

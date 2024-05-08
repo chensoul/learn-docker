@@ -1,16 +1,6 @@
 version: '3.0'
 
 services:
-  zookeeper:
-    restart: always
-    image: zookeeper:3.8.0
-    ports:
-      - "2181:2181"
-    environment:
-      ZOO_MY_ID: 1
-      ZOO_SERVERS: server.1=zookeeper:2888:3888;zookeeper:2181
-      ZOO_ADMINSERVER_ENABLED: false
-
   kafka:
     restart: always
     image: bitnami/kafka:3.7.0
@@ -21,3 +11,12 @@ services:
     depends_on:
       - zookeeper
 
+  zookeeper:
+    image: zookeeper:3.8.0
+    restart: always
+    ports:
+      - "2181:2181"
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=zookeeper:2888:3888;zookeeper:2181
+      ZOO_ADMINSERVER_ENABLED: false

@@ -1,4 +1,4 @@
-version: '3'
+version: '3.0'
 services:
   mysql:
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
@@ -13,7 +13,7 @@ services:
       - mysql:/var/lib/mysql
 
   executor:
-    image: javachen/azkaban-exec-server
+    image: chensoul/azkaban-exec-server
     restart: always
     # 和服务名称保持一致
     hostname: executor
@@ -22,13 +22,13 @@ services:
     depends_on:
       - mysql
     ports:
-      - "12321:12321"  
+      - "12321:12321"
     volumes:
       - /data/bi_etl:/data/bi_etl
       - /data/ods:/data/ods
 
   webserver:
-    image: javachen/azkaban-web-server
+    image: chensoul/azkaban-web-server
     restart: always
     environment:
       AZKABAN_OPTS: "-Xmx512m"

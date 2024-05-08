@@ -1,28 +1,22 @@
-version: '3'
+version: '3.0'
 services:
   # rocketmq代理发现注册服务
   rmqnamesrv:
     image: foxiswho/rocketmq:server
-    container_name: rmqnamesrv
     restart: always
     ports:
-      - 9876:9876
+      - "9876:9876"
     volumes:
       - /data/rocketmq/namesrv/logs:/opt/logs
       - /data/rocketmq/namesrv/store:/opt/store
-    networks:
-      rocketmq:
-        aliases:
-          - rmqnamesrv
 
   # rocketmq核心消息发送存储代理
   rmqbroker:
     image: foxiswho/rocketmq:broker
-    container_name: rmqbroker
     restart: always
     ports:
-      - 10909:10909
-      - 10911:10911
+      - "10909:10909"
+      - "10911:10911"
     volumes:
       - /data/rocketmq/namesrv/logs:/opt/logs
       - /data/rocketmq/namesrv/store:/opt/store
@@ -34,12 +28,4 @@ services:
     command: mqbroker -c /etc/rocketmq/broker.conf
     depends_on:
       - rmqnamesrv
-    networks:
-      rocketmq:
-        aliases:
-          - rmqbroker
 
-# 局域网网关配置
-networks:
-  rocketmq:
-    driver: bridge

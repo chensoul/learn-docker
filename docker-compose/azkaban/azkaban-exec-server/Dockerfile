@@ -1,4 +1,4 @@
-FROM javachen/alpine-jdk:8
+FROM chensoul/alpine-jdk:8
 
 # Azkaban executor port
 EXPOSE 12321

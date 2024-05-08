@@ -1,8 +1,7 @@
-version: '3'
+version: '3.0'
 services:
   sentinel:
     image: sentinel-dashboard:1.8.4-nacos
-    container_name: sentinel
     restart: unless-stopped
     environment:
       TZ: Asia/Shanghai

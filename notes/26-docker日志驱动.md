@@ -15,12 +15,11 @@ ex：推送日志到`logstash`
 ##### `docker-compose.yml`
 
 ```
-version: '3'
+version: '3.0'
 
 services:
   logstash:
     image: registry.cn-hangzhou.aliyuncs.com/zhengqing/logstash:7.14.1     # 原镜像`logstash:7.14.1`
-    container_name: elk_logstash
     restart: unless-stopped
     environment:
       LS_JAVA_OPTS: "-Xmx512m -Xms512m"
@@ -88,12 +87,11 @@ curl 127.0.0.1:666/api/log
 ##### 方式二：docker-compose.yml
 
 ```shell
-version: '3'
+version: '3.0'
 
 services:
   test:
     image: registry.cn-hangzhou.aliyuncs.com/zhengqing/test:dev
-    container_name: test
     ports:
       - "666:80"
     # 日志

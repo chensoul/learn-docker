@@ -1,6 +1,6 @@
 # https://github.com/alfg/docker-ffmpeg/blob/master/Dockerfile
 
-FROM javachen/alpine-jdk:8
+FROM chensoul/alpine-jdk:8
 
 # User root user to install software
 USER root
@@ -28,6 +28,6 @@ RUN set -euxo pipefail \
   ffmpeg \
   && apk del BUILD
 
-USER java 
+USER java
 
-CMD ["/usr/bin/ffmpeg"]  
+CMD ["/usr/bin/ffmpeg"]
