@@ -1,14 +1,13 @@
-version: '3.0'
 services:
   activemq:
-    image: rmohr/activemq
-    restart: always
+    image: apache/activemq-classic
+    environment:
+      - "TZ=Asia/Shanghai"
+    volumes:
+      - activemq_data:/opt/apache-activemq/data
     ports:
-      - "61613:61613"
       - "61616:61616"
       - "8161:8161"
-    environment:
-      ACTIVEMQ_ADMIN_LOGIN: admin
-      ACTIVEMQ_ADMIN_PASSWORD: admin
-      ACTIVEMQ_CONFIG_MINMEMORY: 512
-      ACTIVEMQ_CONFIG_MAXMEMORY: 2048
+
+volumes:
+  activemq_data:

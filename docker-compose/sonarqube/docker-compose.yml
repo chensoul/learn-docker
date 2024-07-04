@@ -1,20 +1,31 @@
-# https://hub.docker.com/_/sonarqube
-version: '3.0'
 services:
-  sonarqube:
-    image: sonarqube/sonarqube:9.2.1-community
-    restart: unless-stopped
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-    command:
-      - -Dsonar.ce.javaOpts=-Xmx2048m
-      - -Dsonar.web.javaOpts=-Xmx2048m
-      - -Dsonar.web.context=/
-      - -Dsonar.core.serverBaseURL=https://sonarqube.example.com
-    environment:
-      TZ: Asia/Shanghai
-      SONARQUBE_JDBC_USERNAME: sonar
-      SONARQUBE_JDBC_PASSWORD: sonar
-      SONARQUBE_JDBC_URL: jdbc:postgresql://postgres:5432/sonar
-    ports:
-      - "9005:9000"
+    postgres:
+        image: postgres:16-alpine
+        container_name: postgresql
+        environment:
+            - POSTGRES_DB=artifactory
+            - POSTGRES_USER=artifactory
+            - POSTGRES_PASSWORD=password
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+            - /etc/localtime:/etc/localtime:ro
+
+    sonarqube:
+        image: sonarqube:10.6-community
+        ports:
+            - "9000:9000"
+        environment:
+            # CREATE USER sonar WITH PASSWORD 'sonar';
+            # CREATE DATABASE sonar owner sonar;
+            # GRANT ALL ON SCHEMA public TO sonar;
+            - SONAR_JDBC_URL=jdbc:postgresql://postgresql:5432/sonar
+            - SONAR_JDBC_USERNAME=sonar
+            - SONAR_JDBC_PASSWORD=sonar
+        volumes:
+            - sonar_data:/opt/sonarqube
+
+volumes:
+    postgres_data:
+    sonar_data:

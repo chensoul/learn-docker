@@ -1,9 +1,0 @@
-version: '3.0'
-services:
-  nextcloud:
-    image: nextcloud
-    restart: unless-stopped
-    volumes:
-      - ./nextcloud/data:/var/www/html
-    ports:
-      - "81:80"
