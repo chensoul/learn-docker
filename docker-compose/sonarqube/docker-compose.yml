@@ -1,11 +1,10 @@
 services:
     postgres:
-        image: postgres:16-alpine
-        container_name: postgresql
+        image: postgres:17
         environment:
-            - POSTGRES_DB=artifactory
-            - POSTGRES_USER=artifactory
-            - POSTGRES_PASSWORD=password
+            - POSTGRES_DB=sonar
+            - POSTGRES_USER=sonar
+            - POSTGRES_PASSWORD=sonar
         ports:
             - "5432:5432"
         volumes:

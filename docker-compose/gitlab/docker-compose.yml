@@ -1,21 +1,37 @@
-services:
   gitlab:
     image: gitlab/gitlab-ce
-    container_name: gitlab
     restart: always
-    hostname: 'gitlab.example.com'
+    platform: linux/amd64
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        # Add any other gitlab.rb configuration here, each on its own line
-        external_url 'https://gitlab.example.com'
-        gitlab_rails['gitlab_shell_ssh_port'] = 2222
+        external_url 'http://gitlab.example.com'
+
+        gitlab_rails['time_zone'] = 'Asia/Shanghai'
+        gitlab_rails['gitlab_default_theme'] = 2
+        gitlab_rails['gitlab_shell_ssh_port'] = 24
+        gitlab_rails['backup_keep_time'] = 172800
+
+        gitlab_workhorse['listen_network'] = "tcp"
+        gitlab_workhorse['listen_addr'] = "0.0.0.0:8000"
+
+        nginx['enable'] = false
+        unicorn['enable'] = false
     ports:
-      - '80:80'
-      - '443:443'
-      - '2222:2222'
+      - '8000:8000'
+      - '24:22'
     volumes:
       - gitlab_data:/var/opt/gitlab
+      - /etc/localtime:/etc/localtime:ro
+
+  gitlab-runner:
+    image: gitlab/gitlab-runner
+    restart: always
+    volumes:
+      - gitlab_runner_data:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
 
 
 volumes:
-    gitlab_data:
+  gitlab_data:
+  gitlab_runner_data:

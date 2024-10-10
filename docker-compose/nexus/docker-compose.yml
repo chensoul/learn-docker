@@ -1,14 +1,12 @@
-services:
-    nexus:
-        image: sonatype/nexus3
-        platform: linux/amd64
-        ports:
-            - "8081:8081"
-            - "8082:8082" #docker hosted
-            - "8083:8083" #docker group
-        volumes:
-            - nexus_data:/nexus-data
-            - /etc/localtime:/etc/localtime:ro
+  nexus:
+    image: sonatype/nexus3
+    restart: always
+    platform: linux/amd64
+    ports:
+      - "8081:8081"
+    volumes:
+      - nexus_data:/nexus-data
+      - /etc/localtime:/etc/localtime:ro
 
 volumes:
     nexus_data:
