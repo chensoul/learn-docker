@@ -1,5 +1,5 @@
 # 使用 3.9 版本的 python
-FROM python:3.9
+FROM python:3.13
 
 # docker 中，此项目的运行地址为 /code 
 WORKDIR /code
