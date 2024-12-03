@@ -1,4 +1,4 @@
-FROM centos:7
+FROM centos:8
 
 RUN yum update -y && yum -y install kde-l10n-Chinese && yum clean all \
 	&& localedef -c -f UTF-8 -i zh_CN zh_CN.utf8 \
