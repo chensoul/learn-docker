@@ -1,6 +1,6 @@
 services:
   mysql-master:
-    image: mysql:8
+    image: mysql:9
     ports:
       - "3307:3306"
     environment:
@@ -18,7 +18,7 @@ services:
       retries: 30
 
   mysql-slave:
-    image: mysql:8
+    image: mysql:9
     ports:
       - "3308:3306"
     environment:
