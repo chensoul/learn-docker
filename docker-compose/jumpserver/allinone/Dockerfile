@@ -1,4 +1,4 @@
-FROM ubuntu:focal
+FROM ubuntu:noble
 WORKDIR /opt
 ARG TARGETARCH \
     Version=v2.20.2
