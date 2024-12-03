@@ -3,7 +3,7 @@ data:
   entrypoint: /bin/true
 
 service:
-  image: debian:jessie
+  image: debian:bookworm
   command: >
     ./ngrokd
     -domain=ngrok.foobar.site
