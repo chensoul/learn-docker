@@ -1,7 +1,7 @@
 version: "3"
 services:
   seata:
-    image: seataio/seata-server:1.8.0
+    image: seataio/seata-server:2.0.0
     restart: always
     networks:
       - seata
