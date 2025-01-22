@@ -2,7 +2,7 @@ version: '3.0'
 services:
   mysql:
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    image: mysql:9.1
+    image: mysql:9.2
     restart: always
     environment:
       MYSQL_DATABASE: azkaban
