@@ -1,6 +1,6 @@
   # https://elnatantorres.medium.com/configuring-rabbitmq-on-its-startup-with-docker-d219af4b751a
   rabbitmq:
-    image: bitnami/rabbitmq:4.0.5
+    image: bitnami/rabbitmq:4.0.7
     environment:
       RABBITMQ_LOAD_DEFINITIONS: "true"
       # definition is set with -> user: password
