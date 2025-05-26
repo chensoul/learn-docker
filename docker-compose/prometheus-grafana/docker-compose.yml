@@ -1,0 +1,52 @@
+  prometheus:
+    image: prom/prometheus
+    restart: always
+    command:
+      - --enable-feature=exemplar-storage
+      - --config.file=/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana-oss
+    restart: always
+    ports:
+      - "3000:3000"
+    links:
+      - prometheus:prometheus
+    volumes:
+      - ./datasources.yml:/etc/grafana/provisioning/datasources:ro
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=pass
+
+  node_exporter:
+    image: prom/node-exporter
+    ports:
+      - "9100:9100"
+  
+  redis_exporter:
+    image: oliver006/redis_exporter
+    command:
+      - '--redis.addr=redis://ip:port'
+      - '--redis.password=password'
+    ports:
+      - "9121:9121"
+    restart: on-failure
+  
+  mysql_exporter:
+    image: prom/mysqld-exporter
+    environment:
+      - DATA_SOURCE_NAME=username:password@(ip:port)/
+    ports:
+      - "9104:9104"
+  
+  alertmanager:
+    image: prom/alertmanager
+    volumes:
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9093:9093"
+

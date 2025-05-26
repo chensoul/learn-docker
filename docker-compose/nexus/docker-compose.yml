@@ -1,0 +1,12 @@
+  nexus:
+    image: sonatype/nexus3
+    restart: always
+    platform: linux/amd64
+    ports:
+      - "8081:8081"
+    volumes:
+      - nexus_data:/nexus-data
+      - /etc/localtime:/etc/localtime:ro
+
+volumes:
+    nexus_data:

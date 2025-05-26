@@ -1,0 +1,64 @@
+services:
+    zookeeper:
+    image: confluentinc/cp-zookeeper
+    restart: always
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka
+    restart: always
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry
+    hostname: schema-registry
+    depends_on:
+      - kafka
+    ports:
+      - "8085:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka:29092'
+      SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8081
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "8086:8080"
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_CLUSTERS_NAME: local
+      KAFKA_CLUSTERS_BOOTSTRAPSERVERS: kafka:29092
+      #      KAFKA_CLUSTERS_SCHEMAREGISTRY: http://schema-registry:8081
+      DYNAMIC_CONFIG_ENABLED: 'true'
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop:latest
+    healthcheck:
+      test: [ "CMD-SHELL", "curl", "-sX", "GET", "http://localhost:9000/broker" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      KAFKA_BROKERCONNECT: kafka:29092
+      SERVER_SERVLET_CONTEXTPATH: "/"
+      JVM_OPTS: "-Xms32M -Xmx64M"
+    depends_on:
+      - kafka

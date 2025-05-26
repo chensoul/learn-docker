@@ -1,0 +1,21 @@
+  # https://elnatantorres.medium.com/configuring-rabbitmq-on-its-startup-with-docker-d219af4b751a
+  rabbitmq:
+    image: bitnami/rabbitmq:4.0.2
+    environment:
+      RABBITMQ_LOAD_DEFINITIONS: "true"
+      # definition is set with -> user: password
+      RABBITMQ_DEFINITIONS_FILE: /etc/rabbitmq/definitions.json
+      RABBITMQ_PLUGINS: rabbitmq_shovel rabbitmq_shovel_management rabbitmq_delayed_message_exchange
+      RABBITMQ_COMMUNITY_PLUGINS: https://github.com/rabbitmq/rabbitmq-delayed-message-exchange/releases/download/v3.12.0/rabbitmq_delayed_message_exchange-3.12.0.ez
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - ./rabbitmq-definition.json:/etc/rabbitmq/definitions.json
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - rabbitmq_data:/bitnami/rabbitmq/mnesia

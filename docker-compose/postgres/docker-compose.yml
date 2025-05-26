@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:17
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: unless-stopped
+    container_name: pgadmin4_container
+    healthcheck:
+      test: [ "CMD-SHELL",  "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80/misc/ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      # PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: postgres
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+  pgadmin_data:

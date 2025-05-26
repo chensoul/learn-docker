@@ -1,0 +1,9 @@
+services:
+  zipkin:
+    image: openzipkin/zipkin-slim:latest
+    healthcheck:
+      test: [ "CMD-SHELL",  "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:9411/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+     

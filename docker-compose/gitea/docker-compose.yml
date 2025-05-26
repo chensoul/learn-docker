@@ -1,0 +1,14 @@
+# https://docs.gitea.io/en-us/install-with-docker/
+services:
+  gitea:
+    image: gitea/gitea
+    environment:
+      - GITEA__database__DB_TYPE=mysql
+      - GITEA__database__HOST= xxx.xxx.xxx.xxx:8065
+      - GITEA__database__NAME=gitea
+      - GITEA__database__USER=root
+      - GITEA__database__PASSWD= ******
+    restart: always
+    ports:
+      - "8066:3000"
+      - "8065:22"

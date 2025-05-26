@@ -1,0 +1,41 @@
+version: '3.0'
+
+services:
+  # Redis sentinel
+  redis-master:
+    image: redis:7
+    volumes:
+      - redis_sentinel_master_data:/data
+    environment:
+      - REDIS_REPLICATION_MODE=master
+      - REDIS_PASSWORD=123456
+
+  redis-slave:
+    image: redis:7
+    volumes:
+      - redis_sentinel_slave_data:/data
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis-master
+      - REDIS_MASTER_PASSWORD=123456
+      - REDIS_PASSWORD=123456
+    depends_on:
+      - redis-master
+
+  redis-sentinel:
+    image: redis:7
+    volumes:
+      - redis_sentinel_data:/data
+    environment:
+      - REDIS_MASTER_HOST=redis-master
+      - REDIS_MASTER_SET=mymaster
+      - REDIS_SENTINEL_PASSWORD=123456
+      - REDIS_MASTER_PASSWORD=123456
+    depends_on:
+      - redis-master
+      - redis-slave
+
+volumes:
+  redis_sentinel_master_data: 
+  redis_sentinel_slave_data: 
+  redis_sentinel_data:
